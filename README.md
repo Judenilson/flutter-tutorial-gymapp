@@ -1,2 +1,3 @@
-# flutter-tutorial-gymapp
-Learning flutter and dart with internet tutorials
+# gym_app
+
+A new Flutter project.
