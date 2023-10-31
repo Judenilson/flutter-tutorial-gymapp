@@ -18,5 +18,13 @@ InputDecoration getAuthenticationInputDecoration(String label) {
       borderRadius: BorderRadius.circular(64),
       borderSide: const BorderSide(color: MyColors.blueDark, width: 4),
     ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(64),
+      borderSide: const BorderSide(color: Colors.red, width: 2),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(64),
+      borderSide: const BorderSide(color: Colors.red, width: 4),
+    ),
   );
 }
