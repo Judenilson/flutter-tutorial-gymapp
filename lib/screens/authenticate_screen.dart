@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/_common/mycolors.dart';
+import 'package:gym_app/_common/mysnackbar.dart';
 import 'package:gym_app/components/decoration_field_auth.dart';
 import 'package:gym_app/services/authenticating_service.dart';
 
@@ -178,12 +179,30 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
     if (_formkey.currentState!.validate()) {
       if (wantEnter) {
         debugPrint("Entrada Validada");
+        _authService
+            .logUsers(email: email, password: password)
+            .then((String? erro) {
+          if (erro != null) {
+            showSnackBar(context: context, msg: erro);
+          }
+        });
       } else {
         debugPrint("Cadastro Validado");
+        debugPrint(
+            "${_emailController.text}, ${_passController.text}, ${_nameController.text},");
+        _authService
+            .registerUser(name: name, password: password, email: email)
+            .then(
+          (String? erro) {
+            if (erro != null) {
+              showSnackBar(
+                context: context,
+                msg: erro,
+              );
+            }
+          },
+        );
       }
-      debugPrint(
-          "${_emailController.text}, ${_passController.text}, ${_nameController.text},");
-          _authService.registerUser(name: name, password: password, email: email);
     } else {
       debugPrint("Form inválido");
     }
