@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/_common/mycolors.dart';
 import 'package:gym_app/components/decoration_field_auth.dart';
+import 'package:gym_app/services/authenticating_service.dart';
 
 class AuthenticateScreen extends StatefulWidget {
   const AuthenticateScreen({super.key});
@@ -13,6 +14,12 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
   bool wantEnter = true;
   final _formkey = GlobalKey<FormState>();
   String? _pass;
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+
+  AuthenticatingService _authService = AuthenticatingService();
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +62,7 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
                         height: 32,
                       ),
                       TextFormField(
+                        controller: _emailController,
                         decoration: getAuthenticationInputDecoration("E-mail"),
                         validator: (String? value) {
                           if (value == null) {
@@ -73,6 +81,7 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
                         height: 8,
                       ),
                       TextFormField(
+                        controller: _passController,
                         decoration: getAuthenticationInputDecoration("Senha"),
                         obscureText: true,
                         validator: (String? value) {
@@ -104,7 +113,7 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
                                 if (value.length < 6) {
                                   return "A confirmação de senha deve ter no mínimo 6 caracteres";
                                 }
-                                if (_pass != value){
+                                if (_pass != value) {
                                   return "As senhas não conferem";
                                 }
                                 return null;
@@ -114,6 +123,7 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
                               height: 8,
                             ),
                             TextFormField(
+                              controller: _nameController,
                               decoration:
                                   getAuthenticationInputDecoration("Nome"),
                               validator: (String? value) {
@@ -161,8 +171,19 @@ class _AuthenticateScreenState extends State<AuthenticateScreen> {
   }
 
   formClickButton() {
-    if (_formkey.currentState!.validate()){
-      debugPrint("Form válido");
+    String name = _nameController.text;
+    String email = _emailController.text;
+    String password = _passController.text;
+
+    if (_formkey.currentState!.validate()) {
+      if (wantEnter) {
+        debugPrint("Entrada Validada");
+      } else {
+        debugPrint("Cadastro Validado");
+      }
+      debugPrint(
+          "${_emailController.text}, ${_passController.text}, ${_nameController.text},");
+          _authService.registerUser(name: name, password: password, email: email);
     } else {
       debugPrint("Form inválido");
     }
